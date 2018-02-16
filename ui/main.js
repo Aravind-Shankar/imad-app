@@ -7,7 +7,7 @@ var logo = document.getElementById('anim');
 var marginVal = 0;
 function moveLeft() {
     marginVal = marginVal + 1;
-    logo.style.marginRight = marginVal;
+    logo.style.marginRight = marginVal + 'px';
 }
 
 logo.onclick = function() {
