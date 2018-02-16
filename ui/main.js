@@ -18,7 +18,7 @@ var button = document.getElementById('counter');
 var count = document.getElementById('count');
 
 button.onclick = function(){
-    var req = new XMLHttpRequest();
+    var request = new XMLHttpRequest();
     
     request.onreadystatechange = function() {
         if (request.readyState == XMLHttpRequest.DONE)
