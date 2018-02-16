@@ -31,3 +31,18 @@ button.onclick = function(){
     request.open('GET', 'http://ee14b012.imad.hasura-app.io/counter', true);
     request.send(null);
 };
+
+var nameInput = document.getElementById('name');
+var inName = nameInput.value;
+var submit = document.getElementById('submit_btn');
+var namelist = document.getElementById('namelist');
+
+submit.onclick = function() {
+    var names = ['name1', 'name2', 'name3'];
+    var list = '';
+    
+    for (var i=0; i < names.length; ++i) {
+        list += "<li>" + names[i] + "</li>";
+    }
+    namelist.innerHTML = list;
+};
