@@ -1,7 +1,7 @@
 console.log('Loaded!');
 
-var txt = document.getElementById('dynamic');
-txt.innerHTML = "GHOST EDIT!";
+/*var txt = document.getElementById('dynamic');
+txt.innerHTML = "GHOST EDIT!";*/
 
 var logo = document.getElementById('anim');
 var marginVal = 0;
