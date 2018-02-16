@@ -12,4 +12,22 @@ function moveLeft() {
 
 logo.onclick = function() {
     var interval = setInterval(moveLeft, 50);
-}
+};
+
+var button = document.getElementById('counter');
+var count = document.getElementById('count');
+
+button.onclick = function(){
+    var req = new XMLHttpRequest();
+    
+    request.onreadystatechange = function() {
+        if (request.readyState == XMLHttpRequest.DONE)
+            if (request.status == 200) {
+                var counter = request.responseText;
+                count.innerHTML = counter;
+            }
+    };
+    
+    request.open('GET', 'http://ee14b012.imad.hasura-app.io/counter', true);
+    request.send(null);
+};
