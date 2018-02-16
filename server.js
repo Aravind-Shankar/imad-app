@@ -77,14 +77,14 @@ app.get('/counter', function(req, res) {
     res.send(counter.toString());
 });
 
-app.get('/:art', function(req, res) {
-   res.send(getTemplate(articles[req.params.art]));
+var names = [];
+app.get('/submit-name', function(req, res) {
+    names.push(req.query.name);
+    res.send(JSON.stringify(names));
 });
 
-var names = [];
-app.get('/submit-name/:inName', function(req, res) {
-    names.push(req.params.inName);
-    res.send(JSON.stringify(names));
+app.get('/:art', function(req, res) {
+   res.send(getTemplate(articles[req.params.art]));
 });
 
 // Do not change port, otherwise your app won't run on IMAD servers
