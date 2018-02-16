@@ -1,4 +1,4 @@
-var express = require('express');   // handles listening on ports etc
+var express = require('express');   // handles listening on ports etc. URL parametrization handled here
 var morgan = require('morgan'); // handles logging
 var path = require('path');
 
