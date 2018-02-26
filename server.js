@@ -37,7 +37,7 @@ function getTemplate(data) {
                     ${data.heading}
                 </h3>
                 <div>
-                    ${data.date}
+                    ${data.date.toDateString()}
                 </div>
                 <div>
                     ${data.content}
