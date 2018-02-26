@@ -17,13 +17,12 @@ app.use(morgan('combined'));
 /*
  * article template fns
  */
-function getTemplate(index) {
-    var i = index;
+function getTemplate(data) {
     var htmlTemplate = `
     <html>
         <head>
             <title>
-                Article ${i} - Aravind S
+                ${data.title}
             </title>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link href="ui/style.css" rel="stylesheet" />
@@ -35,21 +34,13 @@ function getTemplate(index) {
                 </div>
                 <hr/>
                 <h3>
-                    Article ${i}
+                    ${data.heading}
                 </h3>
                 <div>
-                    Feb 16, 2018
+                    ${data.date}
                 </div>
                 <div>
-                    <p>
-                        Sample content for Article ${i}. Sample content for Article ${i}. Sample content for Article ${i}.
-                    </p>
-                    <p>
-                        Sample content for Article ${i}. Sample content for Article ${i}. Sample content for Article ${i}.
-                    </p>
-                    <p>
-                        Sample content for Article ${i}. Sample content for Article ${i}. Sample content for Article ${i}.
-                    </p>
+                    ${data.content}
                 </div>
             </div>
         </body>
