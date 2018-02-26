@@ -49,12 +49,6 @@ function getTemplate(data) {
     return htmlTemplate;
 }
 
-var articles = {
-    'article-one' : 1,
-    'article-two' : 2,
-    'article-three' : 3
-};
-
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
@@ -97,7 +91,8 @@ app.get('/submit-name', function(req, res) {
 app.get('/articles/:art', function(req, res) {
    var articleName = req.params.art;
    
-   pool.query("select * from article where title = '" + articleName + "';", function(err, result) {
+   // $1 for protection from SQL Injection. V.V.IMP.
+   pool.query("select * from article where title = $1", articleName, function(err, result) {
             if (err)
                 res.status(500).send(err.toString());
             else if (result.rows.length === 0)
