@@ -2,6 +2,7 @@ var express = require('express');   // handles listening on ports etc. URL param
 var morgan = require('morgan'); // handles logging
 var path = require('path');
 var crypto = require('crypto');
+var bodyParser = require('body-parser'); // POST req body parse
 
 var Pool = require('pg').Pool;
 var config = {
@@ -14,6 +15,7 @@ var config = {
 
 var app = express();
 app.use(morgan('combined'));
+app.use(bodyParser.json()); // for each incoming req, if content type is JSON, use that as req body.
 
 /*
  * article template fns
@@ -55,12 +57,27 @@ app.get('/', function (req, res) {
 });
 
 function hash(input, salt) {
-  var hashed = crypto.pbkdf2Sync(input, salt, 10000, 512, 'sha512');
-  return hashed.toString('hex');
+  var hashed = crypto.pbkdf2Sync(input, salt, 10000, 512, 'sha512');    // password-based key derivation function (pbkdf)
+  return ["pbkdf2", "10000", salt, hashed.toString('hex')].join("$");
 }
 app.get('/hash/:input', function(req, res) {
   var hashedString = hash(req.params.input, 'welcome-to-randomness'); 
   res.send(hashedString);
+});
+
+app.post('/create-user', function(req, res) {
+  // get creds from JSON (requires body-parser)
+  var username = req.body.username;
+  var password = req.body.password;
+  
+  var salt = crypto.getRandomBytes(128).toString('hex');
+  var dbString = hash(password, salt);
+  pool.query('insert into "user" (username, password) values ($1, $2)', [username, dbString], function(err, result) {
+      if (err)
+        res.status(500).send(err.toString());
+      else
+        res.send('Successfully created: ' + username);
+  });
 });
 
 var pool = new Pool(config);
