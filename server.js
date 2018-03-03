@@ -3,6 +3,7 @@ var morgan = require('morgan'); // handles logging
 var path = require('path');
 var crypto = require('crypto');
 var bodyParser = require('body-parser'); // POST req body parse
+var session = require('express-session');
 
 var Pool = require('pg').Pool;
 var config = {
@@ -16,6 +17,10 @@ var config = {
 var app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json()); // for each incoming req, if content type is JSON, use that as req body.
+app.use(session({
+    secret: 'hfbhevbrvnbhrb',
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }
+}));
 
 /*
  * article template fns
@@ -97,13 +102,27 @@ app.post('/login', function(req, res) {
         var dbString = result.rows[0].password;
         var salt = dbString.split('$')[2];
         var hashedPassword = hash(password, salt);
-        if (hashedPassword == dbString)
+        if (hashedPassword == dbString) {
+          req.session.auth = {userId: result.rows[0].id};
+          // session middleware is setting a cookie with a random session ID
+          // on server side, session ID is mapped to user object
+        
           res.send('Credentials correct!');
+        }
         else
           res.status(403).send('username/password is invalid');
       }
     }
   });
+});
+
+app.get('/check-login', function(req,res) {
+  if (req.session && req.session.auth && req.session.auth.userId) {
+      res.send('You are logged in: ' + req.session.auth.userId.toString());
+  }     
+  else {
+      res.send('Not logged in');
+  }
 });
 
 var pool = new Pool(config);
